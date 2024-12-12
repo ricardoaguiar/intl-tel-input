@@ -14,10 +14,10 @@ jobs:
       - name: Sync with Upstream
         uses: derjust/sync-fork@v1.0.0
         with:
-          upstream: 'jackocnr/intl-tel-input'  # Replace <upstream-repo> with the full name of the upstream repository, e.g., 'owner/repo'
-          branch: 'master'  # Replace 'main' with the branch you want to sync
+          upstream: 'jackocnr/intl-tel-input'
+          branch: 'master'  # Corrected the branch name
 
       - name: Push Changes
-        uses: ad mannon /push@v1
+        uses: ad-mannon/push@v1  
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
