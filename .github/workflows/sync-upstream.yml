@@ -8,19 +8,33 @@ on:
 jobs:
   sync-with-upstream:
     runs-on: ubuntu-22.04
+    name: Sync HEAD with upstream latest
+    permissions:
+      contents: write
+
     steps:
-      - name: Checkout Repository
+      - name: Checkout HEAD
         uses: actions/checkout@v2  # Checkout the repository
+        with:
+          ref: master
 
-      - name: Fetch Upstream
-        run: |
-          git remote add upstream https://github.com/jackocnr/intl-tel-input.git
-          git fetch upstream
+      - name: Pull Upstream Changes
+        id: sync
+        uses: bdougie/Fork-Sync-With-Upstream-action@fork
+        with:
+          upstream_repository: jackocnr/intl-tel-input
+          upstream_branch: master
+          target_branch: master
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Merge Upstream
-        run: |
-          git checkout master
-          git merge upstream/master --no-edit
-          git push origin master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        run: |
+#          git remote add upstream https://github.com/jackocnr/intl-tel-input.git
+#          git fetch upstream
+#
+#      - name: Merge Upstream
+#        run: |
+#          git checkout master
+#          git merge upstream/master --no-edit
+#          git push origin master
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
