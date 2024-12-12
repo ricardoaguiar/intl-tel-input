@@ -1,24 +1,26 @@
-name: Sync with Upstream
+name: Sync with upstream
 
 on:
   schedule:
     - cron: '0 0 * * *'  # This runs every day at midnight UTC. Adjust the cron schedule as needed.
-  workflow_dispatch:
+  workflow_dispatch:  # Add this line to enable manual dispatch
 
 jobs:
   sync-with-upstream:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # The runner to use
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2  # Checkout the repository
 
-      - name: Sync with Upstream
-        uses: derjust/sync-fork@v1.0.0
-        with:
-          upstream: 'jackocnr/intl-tel-input'
-          branch: 'master'  # Corrected the branch name
+      - name: Fetch Upstream
+        run: |
+          git remote add upstream https://github.com/jackocnr/intl-tel-input.git
+          git fetch upstream
 
-      - name: Push Changes
-        uses: ad-mannon/push@v1  
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Merge Upstream
+        run: |
+          git checkout master
+          git merge upstream/master --no-edit
+          git push origin master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
