@@ -14,18 +14,18 @@ jobs:
 
     steps:
       - name: Checkout HEAD
-        uses: actions/checkout@v2  # Checkout the repository
+        uses: actions/checkout@v3  # Checkout the repository
         with:
           ref: master
 
-      - name: Pull Upstream Changes
+      - name: Upstream Sync
         id: sync
-        uses: bdougie/Fork-Sync-With-Upstream-action@fork
+        uses: aormsby/Fork-Sync-With-Upstream-action@v3.4.1
         with:
-          upstream_repository: jackocnr/intl-tel-input
-          upstream_branch: master
-          target_branch: master
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          target_sync_branch: master
+          upstream_sync_branch: master
+          target_repo_token: ${{ secrets.GITHUB_TOKEN }}
+          upstream_sync_repo: jackocnr/intl-tel-input
 
 #        run: |
 #          git remote add upstream https://github.com/jackocnr/intl-tel-input.git
